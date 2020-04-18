@@ -36,7 +36,7 @@ img {
 .color-box {
   width: 40px;
   height: 40px;
-  margin-top: 5px;
+  margin: 4px;
 }
 
 .cart {
@@ -86,4 +86,9 @@ textarea {
 .activeTab {
   color: #16C0B0;
   text-decoration: underline;
+}
+
+.variant-box {
+  display: inline-flex;
+  flex-direction: row;
 }

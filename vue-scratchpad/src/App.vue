@@ -24,9 +24,13 @@
           </ul>
         </div>
         <div>
-          <label>Variants available</label>
-          <div v-for="variant in variants" :key="variant.id">
-            <p @click="updateProduct(variant)">{{variant.color}}</p>
+          <div>Variants available</div>
+          <div class="variant-box">
+            <div class="color-box"
+              v-for="variant in variants"
+              :key="variant.id"
+              :style="{ backgroundColor:variant.color, 'border-radius': '50%'}"
+              @click="updateProduct(variant)" />
           </div>
         </div>
         <div>
@@ -36,7 +40,9 @@
           </ul>
         </div>
         <div>
-          <button v-on:click="addToCart">Add to Cart</button>
+          <button v-on:click="addToCart"
+            :disabled="inventory <= 0"
+            :class="{disabledButton: inventory <= 0}">Add to Cart</button>
           <button v-on:click="removeFromCart">Remove from Cart</button>
           <div class="cart">
             <p>Cart({{cart}})</p>
