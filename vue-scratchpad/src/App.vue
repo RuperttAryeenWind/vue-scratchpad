@@ -2,8 +2,8 @@
   <div id="app">
     <div class="product">
       <div class="product-image">
-        <a :href="image.url">
-          <img :src="image.url" :alt="image.alt" />
+        <a :href="selectedProduct.image.url">
+          <img :src="selectedProduct.image.url" :alt="selectedProduct.image.alt" />
         </a>
       </div>
       <div class="product-info">
@@ -25,15 +25,22 @@
         </div>
         <div>
           <label>Variants available</label>
-          <ul>
-            <li v-for="variant in variants" :key="variant.id">{{variant.color}}</li>
-          </ul>
+          <div v-for="variant in variants" :key="variant.id">
+            <p @click="updateProduct(variant)">{{variant.color}}</p>
+          </div>
         </div>
         <div>
           <label>Sizes available</label>
           <ul>
             <li v-for="size in sizes" :key="size">{{size}}</li>
           </ul>
+        </div>
+        <div>
+          <button v-on:click="addToCart">Add to Cart</button>
+          <button v-on:click="removeFromCart">Remove from Cart</button>
+          <div class="cart">
+            <p>Cart({{cart}})</p>
+          </div>
         </div>
       </div>
     </div>
@@ -47,20 +54,55 @@ export default {
     return {
       product: "Socks",
       description: "This is a pair of amazing socks",
-      alt: "green socks",
-      inventory: 100,
+      inventory: 15,
       onSale: true,
+      selectedProduct : {
+        id: 1000,
+        color: "green",
+        image: {
+          url: "./assets/images/vmSocks-green-onWhite.jpg",
+          alt: "green socks"
+          },
+      },
       variants: [
-        { id: 1000, color: "green" },
-        { id: 1001, color: "blue" }
+        {
+          id: 1000,
+          color: "green",
+          image: {
+            url: "./assets/images/vmSocks-green-onWhite.jpg",
+            alt: "green socks"
+            },
+        },
+        {
+          id: 1001,
+          color: "blue",
+          image: {
+            url: "./assets/images/vmSocks-blue-onWhite.jpg",
+            alt: "green socks"
+            },
+        }
       ],
       sizes: [ "S", "M", "L"],
       details: [ "S", "M", "L"],
-      image: {
-        url: "./assets/images/vmSocks-green-onWhite.jpg",
-        alt: "green socks"
-      }
+      cart: 0
     }
   },
+  methods: {
+    addToCart() {
+      if (this.inventory > 0) {
+        this.cart = this.cart + 1;
+        this.inventory = this.inventory - 1;
+      }
+    },
+    removeFromCart() {
+      if (this.cart > 0) {
+        this.cart = this.cart - 1
+        this.inventory = this.inventory + 1;
+      }
+    },
+    updateProduct(product) {
+      this.selectedProduct = product;
+    }
+  }
 }
 </script>
