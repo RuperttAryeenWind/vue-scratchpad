@@ -1,7 +1,16 @@
 <template>
   <div id="app">
-    <h1>{{ product }}</h1>
-    <h1>{{ description }}</h1>
+    <div class="product">
+      <div class="product-image">
+        <a :href="image">
+          <img :src="image" :alt="alt" />
+        </a>
+      </div>
+      <div class="product-info">
+        <h1>{{ product }}</h1>
+        <h1>{{ description }}</h1>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -12,19 +21,16 @@ export default {
   data: function () {
     return {
       product: "Socks",
-      description: "This is a pair of socks"
+      description: "This is a pair of socks",
+      image: `/assets/images/vmSocks-green-onWhite.jpg`,
+      alt: "green socks"
+
+      //  TODO: Move image attributes to nested object
+      // image: {
+      //   url: "./assets/images/vmSocks-green-onWhite.jpg",
+      //   alt: "green socks"
+      // }
     }
   },
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
