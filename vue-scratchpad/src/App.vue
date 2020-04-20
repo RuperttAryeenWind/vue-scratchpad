@@ -2,17 +2,15 @@
   <div id="app">
     <div class="product">
       <div class="product-image">
-        <a :href="selectedProduct.image.url">
-          <img :src="selectedProduct.image.url" :alt="selectedProduct.image.alt" />
+        <a :href="image.url">
+          <img :src="image.url" :alt="image.alt" />
         </a>
       </div>
       <div class="product-info">
         <h1>{{ product }}</h1>
         <h4>{{ description }}</h4>
         <div>
-          <p v-if="inventory > 10">In Stock</p>
-          <p v-else-if="inventory <= 10 && inventory>0">Almost Sold Out</p>
-          <p v-else>Out of Stock</p>
+          <p>{{ availability }}</p>
         </div>
         <div>
           <p v-show="onSale">On Sale!!!</p>
@@ -27,10 +25,10 @@
           <div>Variants available</div>
           <div class="variant-box">
             <div class="color-box"
-              v-for="variant in variants"
+              v-for="(variant, index) in variants"
               :key="variant.id"
               :style="{ backgroundColor:variant.color, 'border-radius': '50%'}"
-              @click="updateProduct(variant)" />
+              @click="updateProduct(index)" />
           </div>
         </div>
         <div>
@@ -41,8 +39,8 @@
         </div>
         <div>
           <button v-on:click="addToCart"
-            :disabled="inventory <= 0"
-            :class="{disabledButton: inventory <= 0}">Add to Cart</button>
+            :disabled="availability=='Out of Stock'"
+            :class="{disabledButton: availability=='Out of Stock'}">Add to Cart</button>
           <button v-on:click="removeFromCart">Remove from Cart</button>
           <div class="cart">
             <p>Cart({{cart}})</p>
@@ -60,19 +58,12 @@ export default {
     return {
       product: "Socks",
       description: "This is a pair of amazing socks",
-      inventory: 15,
       onSale: true,
-      selectedProduct : {
-        id: 1000,
-        color: "green",
-        image: {
-          url: "./assets/images/vmSocks-green-onWhite.jpg",
-          alt: "green socks"
-          },
-      },
+      selectedProduct : 0,
       variants: [
         {
-          id: 1000,
+          inventory: 15,
+          carted: 0,
           color: "green",
           image: {
             url: "./assets/images/vmSocks-green-onWhite.jpg",
@@ -80,7 +71,8 @@ export default {
             },
         },
         {
-          id: 1001,
+          inventory: 5,
+          carted: 0,
           color: "blue",
           image: {
             url: "./assets/images/vmSocks-blue-onWhite.jpg",
@@ -95,19 +87,38 @@ export default {
   },
   methods: {
     addToCart() {
-      if (this.inventory > 0) {
+      var selected = this.variants[this.selectedProduct];
+      var available = selected.inventory - selected.carted;
+
+      if (available > 0) {
         this.cart = this.cart + 1;
-        this.inventory = this.inventory - 1;
+        selected.carted = selected.carted + 1;
       }
     },
     removeFromCart() {
-      if (this.cart > 0) {
+      var selected = this.variants[this.selectedProduct];
+
+      if (selected.carted > 0) {
         this.cart = this.cart - 1
-        this.inventory = this.inventory + 1;
+        selected.carted = selected.carted - 1;
       }
     },
     updateProduct(product) {
       this.selectedProduct = product;
+    }
+  },
+  computed: {
+    image() {
+      return this.variants[this.selectedProduct].image
+    },
+    availability() {
+      var selected = this.variants[this.selectedProduct];
+      var quantity = selected.inventory - selected.carted;
+      return quantity > 10
+        ? "In Stock"
+        : (quantity <= 10 && quantity > 0)
+          ? "Almost Sold Out"
+          : "Out of Stock";
     }
   }
 }
