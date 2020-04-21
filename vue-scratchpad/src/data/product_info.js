@@ -24,8 +24,7 @@ export default {
     }
   ],
   sizes: [ "S", "M", "L"],
-  details: [ "S", "M", "L"],
+  details: ['80% cotton', '20% polyester', 'Gender-neutral'],
   cart: 0,
   premium: true
-
 }

@@ -11,12 +11,7 @@
         <p v-show="onSale">On Sale!!!</p>
       </div>
       <Shipping :premium="premium" />
-      <div>
-        <label>Details of the product</label>
-        <ul>
-          <li v-for="detail in details" :key="detail">{{detail}}</li>
-        </ul>
-      </div>
+      <ProductDetails :details="details" />
       <div>
         <div>Variants available</div>
         <div class="variant-box">
@@ -50,12 +45,14 @@
 import product_data from "../data/product_info";
 import ProductImage from "../components/product-info/ProductImage"
 import Shipping from "../components/product-info/Shipping"
+import ProductDetails from "../components/product-info/ProductDetails"
 
 export default {
   name: 'Product',
   components: {
     ProductImage,
-    Shipping
+    Shipping,
+    ProductDetails
   },
   data: () => product_data,
   methods: {
