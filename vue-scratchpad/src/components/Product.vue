@@ -1,10 +1,6 @@
 <template>
   <div class="product">
-    <div class="product-image">
-      <a :href="image.url">
-        <img :src="image.url" :alt="image.alt" />
-      </a>
-    </div>
+    <ProductImage :image="image" />
     <div class="product-info">
       <h1>{{ product }}</h1>
       <h4>{{ description }}</h4>
@@ -51,10 +47,12 @@
 
 <script>
 import product_data from "../data/product_info";
+import ProductImage from "../components/product-info/ProductImage"
 
 export default {
-  name: 'App',
+  name: 'Product',
   components: {
+    ProductImage
   },
   data: () => product_data,
   methods: {
