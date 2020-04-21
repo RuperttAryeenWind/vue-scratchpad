@@ -25,5 +25,7 @@ export default {
   ],
   sizes: [ "S", "M", "L"],
   details: [ "S", "M", "L"],
-  cart: 0
+  cart: 0,
+  premium: true
+
 }

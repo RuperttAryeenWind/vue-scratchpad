@@ -10,6 +10,7 @@
       <div>
         <p v-show="onSale">On Sale!!!</p>
       </div>
+      <Shipping :premium="premium" />
       <div>
         <label>Details of the product</label>
         <ul>
@@ -48,11 +49,13 @@
 <script>
 import product_data from "../data/product_info";
 import ProductImage from "../components/product-info/ProductImage"
+import Shipping from "../components/product-info/Shipping"
 
 export default {
   name: 'Product',
   components: {
-    ProductImage
+    ProductImage,
+    Shipping
   },
   data: () => product_data,
   methods: {
