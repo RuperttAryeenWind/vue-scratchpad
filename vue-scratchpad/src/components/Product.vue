@@ -30,26 +30,19 @@
       </div>
       <div>
         <button v-on:click="addToCart"
-                :disabled="availability=='Out of Stock'"
-                :class="{disabledButton: availability=='Out of Stock'}">
+                :disabled="availability === 'Out of Stock'"
+                :class="{disabledButton: availability ==='Out of Stock'}">
           Add to Cart
         </button>
         <button v-on:click="removeFromCart"
-                :disabled="this.quantityInCart == 0"
-                :class="{disabledButton: this.quantityInCart == 0}">
+                :disabled="this.quantityInCart === 0"
+                :class="{disabledButton: this.quantityInCart === 0}">
           Remove from Cart
         </button>
       </div>
       <hr />
-      <div>
-        <h4>Reviews ( {{ reviews.length }} ) </h4>
-        <div class="reviews" v-for="review in reviews" :key="review.name">
-          <h5>Rated {{ review.rating }}/5 by {{ review.name }}</h5>
-          <div> {{ review.review }} </div>
-        </div>
-      </div>
+      <ProductReviewTabs :reviews="this.reviews"/>
     </div>
-    <ProductReview @review-submitted="updateReviews"/>
   </div>
 </template>
 
@@ -58,7 +51,7 @@ import product_data from "../data/product_info";
 import ProductImage from "../components/product-info/ProductImage"
 import Shipping from "../components/product-info/Shipping"
 import ProductDetails from "../components/product-info/ProductDetails"
-import ProductReview from "../components/product-info/ProductReview"
+import ProductReviewTabs from "./product-info/reviews/ProductReviewTabs"
 
 export default {
   name: 'Product',
@@ -66,7 +59,7 @@ export default {
     ProductImage,
     Shipping,
     ProductDetails,
-    ProductReview
+    ProductReviewTabs
   },
   props: {
     cart: {
@@ -77,7 +70,7 @@ export default {
   data: () => product_data,
   methods: {
     addToCart() {
-      var quantity = this.selected.inventory - this.quantityInCart;
+      const quantity = this.selected.inventory - this.quantityInCart;
 
       if(quantity > 0) {
         this.$emit('add-to-cart', this.selected);
@@ -88,9 +81,6 @@ export default {
     },
     updateProduct(product) {
       this.selectedProduct = product;
-    },
-    updateReviews(review) {
-      this.reviews.push(review)
     }
   },
   computed: {
@@ -104,7 +94,7 @@ export default {
     },
     quantityInCart() {
       if (this.cart && this.cart.length > 0) {
-        var index = this.cart.findIndex(item => item.id == this.selected.id);
+        const index = this.cart.findIndex(item => item.id === this.selected.id);
 
         if (index >= 0) {
           return this.cart[index].count;
@@ -113,7 +103,7 @@ export default {
       return 0;
     },
     availability() {
-      var quantity = this.selected.inventory - this.quantityInCart;
+      const quantity = this.selected.inventory - this.quantityInCart;
       return quantity > 10
         ? "In Stock"
         : (quantity <= 10 && quantity > 0)
