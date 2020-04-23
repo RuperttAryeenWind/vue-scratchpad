@@ -25,5 +25,12 @@ export default {
   ],
   sizes: [ "S", "M", "L"],
   details: ['80% cotton', '20% polyester', 'Gender-neutral'],
-  premium: true
+  premium: true,
+  reviews: [ {
+    name: "Adam",
+    rating: 4,
+    review: "Very good product"
+  }
+
+  ]
 }

@@ -41,7 +41,15 @@
         </button>
       </div>
       <hr />
+      <div>
+        <h4>Reviews ( {{ reviews.length }} ) </h4>
+        <div class="reviews" v-for="review in reviews" :key="review.name">
+          <h5>Rated {{ review.rating }}/5 by {{ review.name }}</h5>
+          <div> {{ review.review }} </div>
+        </div>
+      </div>
     </div>
+    <ProductReview @review-submitted="updateReviews"/>
   </div>
 </template>
 
@@ -50,13 +58,15 @@ import product_data from "../data/product_info";
 import ProductImage from "../components/product-info/ProductImage"
 import Shipping from "../components/product-info/Shipping"
 import ProductDetails from "../components/product-info/ProductDetails"
+import ProductReview from "../components/product-info/ProductReview"
 
 export default {
   name: 'Product',
   components: {
     ProductImage,
     Shipping,
-    ProductDetails
+    ProductDetails,
+    ProductReview
   },
   props: {
     cart: {
@@ -78,6 +88,9 @@ export default {
     },
     updateProduct(product) {
       this.selectedProduct = product;
+    },
+    updateReviews(review) {
+      this.reviews.push(review)
     }
   },
   computed: {
