@@ -30,13 +30,17 @@
       </div>
       <div>
         <button v-on:click="addToCart"
-          :disabled="availability=='Out of Stock'"
-          :class="{disabledButton: availability=='Out of Stock'}">Add to Cart</button>
-        <button v-on:click="removeFromCart">Remove from Cart</button>
-        <div class="cart">
-          <p>Cart({{cart}})</p>
-        </div>
+                :disabled="availability=='Out of Stock'"
+                :class="{disabledButton: availability=='Out of Stock'}">
+          Add to Cart
+        </button>
+        <button v-on:click="removeFromCart"
+                :disabled="this.quantityInCart == 0"
+                :class="{disabledButton: this.quantityInCart == 0}">
+          Remove from Cart
+        </button>
       </div>
+      <hr />
     </div>
   </div>
 </template>
@@ -54,36 +58,49 @@ export default {
     Shipping,
     ProductDetails
   },
+  props: {
+    cart: {
+      type: Array,
+      required: true
+    }
+  },
   data: () => product_data,
   methods: {
     addToCart() {
-      var selected = this.variants[this.selectedProduct];
-      var available = selected.inventory - selected.carted;
+      var quantity = this.selected.inventory - this.quantityInCart;
 
-      if (available > 0) {
-        this.cart = this.cart + 1;
-        selected.carted = selected.carted + 1;
+      if(quantity > 0) {
+        this.$emit('add-to-cart', this.selected);
       }
     },
     removeFromCart() {
-      var selected = this.variants[this.selectedProduct];
-
-      if (selected.carted > 0) {
-        this.cart = this.cart - 1
-        selected.carted = selected.carted - 1;
-      }
+      this.$emit('remove-from-cart', this.selected);
     },
     updateProduct(product) {
       this.selectedProduct = product;
     }
   },
   computed: {
+    console: () => console,
+    window: () => window,
     image() {
-      return this.variants[this.selectedProduct].image
+      return this.selected.image
+    },
+    selected() {
+      return this.variants[this.selectedProduct];
+    },
+    quantityInCart() {
+      if (this.cart && this.cart.length > 0) {
+        var index = this.cart.findIndex(item => item.id == this.selected.id);
+
+        if (index >= 0) {
+          return this.cart[index].count;
+        }
+      }
+      return 0;
     },
     availability() {
-      var selected = this.variants[this.selectedProduct];
-      var quantity = selected.inventory - selected.carted;
+      var quantity = this.selected.inventory - this.quantityInCart;
       return quantity > 10
         ? "In Stock"
         : (quantity <= 10 && quantity > 0)

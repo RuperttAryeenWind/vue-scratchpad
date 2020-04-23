@@ -5,8 +5,8 @@ export default {
   selectedProduct : 0,
   variants: [
     {
+      id: 1000,
       inventory: 15,
-      carted: 0,
       color: "green",
       image: {
         url: "./assets/images/vmSocks-green-onWhite.jpg",
@@ -14,8 +14,8 @@ export default {
         },
     },
     {
+      id: 1001,
       inventory: 5,
-      carted: 0,
       color: "blue",
       image: {
         url: "./assets/images/vmSocks-blue-onWhite.jpg",
@@ -25,6 +25,5 @@ export default {
   ],
   sizes: [ "S", "M", "L"],
   details: ['80% cotton', '20% polyester', 'Gender-neutral'],
-  cart: 0,
   premium: true
 }
